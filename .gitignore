@@ -22,5 +22,6 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sw?
+web.esproj.user
 obj
 bin
