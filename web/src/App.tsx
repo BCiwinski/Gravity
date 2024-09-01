@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div className="app">
-          <SpaceCanvas></SpaceCanvas>
+          <SpaceCanvas height={1024} width={1024}></SpaceCanvas>
           <OptionsPanel></OptionsPanel>
     </div>
   )
