@@ -14,11 +14,15 @@ export default class SpaceCanvasRenderer {
 
     #stars: Array<Star> = new Array<Star>();
 
-    gravitationScale: number = 1000.0;
+    gravitationScale: number = 200.0;
+
+    velocityScale: number = 0.02;
 
     #gravitationMax: number = 0.1;
 
     #intervalId: number;
+
+    #tickMs: number = 50;
 
     constructor(context: CanvasRenderingContext2D){
 
@@ -34,7 +38,7 @@ export default class SpaceCanvasRenderer {
 
         this.#render();
 
-        this.#intervalId = setInterval(() => this.#simulate(), 50);
+        this.#intervalId = setInterval(() => this.#tick(this.#tickMs), this.#tickMs);
     }
 
     createStarAt(x: number, y: number): void {
@@ -43,7 +47,14 @@ export default class SpaceCanvasRenderer {
         this.#render();
     }
 
-    #simulate() : void {
+    #tick(deltaMs: number): void {
+
+        this.#simulateGravitation(deltaMs);
+        this.#simulateMovement(deltaMs);
+        this.#render();
+    }
+
+    #simulateGravitation(deltaMs: number) : void {
 
         let old: Array<Star> = Array.from(this.#stars);
 
@@ -65,21 +76,22 @@ export default class SpaceCanvasRenderer {
                 let directionX = (old[j].x - this.#stars[i].x) / distance;
                 let directionY = (old[j].y - this.#stars[i].y) / distance;
 
-                let dx = directionX * Math.min(this.gravitationScale / distanceSquared, this.#gravitationMax);
-                let dy = directionY * Math.min(this.gravitationScale / distanceSquared, this.#gravitationMax);
+                let dx = directionX * Math.min((this.gravitationScale * deltaMs) / distanceSquared, this.#gravitationMax);
+                let dy = directionY * Math.min((this.gravitationScale * deltaMs) / distanceSquared, this.#gravitationMax);
 
                 this.#stars[i].momentumX += dx;
                 this.#stars[i].momentumY += dy;
             }
         }
+    }
+
+    #simulateMovement(deltaMs: number): void {
 
         this.#stars.forEach(s => {
 
-            s.x += s.momentumX;
-            s.y += s.momentumY;
+            s.x += s.momentumX * deltaMs * this.velocityScale;
+            s.y += s.momentumY * deltaMs * this.velocityScale;
         });
-
-        this.#render();
     }
 
     #render() {
