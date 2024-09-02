@@ -47,6 +47,11 @@ export default class SpaceCanvasRenderer {
         this.#render();
     }
 
+    clearStars(): void {
+
+        this.#stars = new Array<Star>();
+    }
+
     #tick(deltaMs: number): void {
 
         this.#simulateGravitation(deltaMs);

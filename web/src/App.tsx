@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import OptionsPanel from './OptionsPanel'
 import SpaceCanvas from './SpaceCanvas'
 import SpaceCanvasRenderer from './SpaceCanvasRenderer'
@@ -64,6 +64,14 @@ function App() {
         }
     }
 
+    function handleClearClick(): void {
+
+        if (rendererRef.current != null) {
+
+            rendererRef.current.clearStars();
+        }
+    }
+
     return (
         <div className="app">
             <SpaceCanvas
@@ -79,6 +87,7 @@ function App() {
                 gravitationMaxChangeHandler={handleGravitationMaxChange}
                 velocityScaleValue={velocityScale}
                 velocityScaleChangeHandler={handleVelocityScaleChange}
+                clearHandler={handleClearClick}
             />
         </div>
     )

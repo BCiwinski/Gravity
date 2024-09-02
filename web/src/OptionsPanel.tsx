@@ -6,14 +6,16 @@ function OptionsPanel({
     gravitationMaxValue,
     gravitationMaxChangeHandler,
     velocityScaleValue,
-    velocityScaleChangeHandler }:
+    velocityScaleChangeHandler,
+    clearHandler}:
     {
         gravitationScaleValue: number,
         gravitationScaleChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void,
         gravitationMaxValue : number
         gravitationMaxChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void,
         velocityScaleValue: number
-        velocityScaleChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void
+        velocityScaleChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void,
+        clearHandler: () => void
     }) {
 
     return (
@@ -55,6 +57,8 @@ function OptionsPanel({
                     defaultValue={velocityScaleValue}
                     onChange={e => velocityScaleChangeHandler(e)}
                 />
+                <br />
+                <input type="button" value="Clear" onClick={() => clearHandler()} />
             </div>
 
         </div>
