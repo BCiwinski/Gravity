@@ -88,12 +88,18 @@ export default class SpaceCanvasRenderer {
 
         this.#stars.forEach(s => {
 
-            const size = 25;
+            const size = 15;
 
-            for (let i = s.x; i < s.x + size; i++) {
-                for (let j = s.y; j < s.y + size; j++) {
+            const brightness = 5;
 
-                    this.#setPixelValue(i, j, 255, 255, 255);
+            for (let x = Math.round(s.x - size); x < Math.round(s.x + size); x++) {
+                for (let y = Math.round(s.y - size); y < Math.round(s.y + size); y++) {
+
+                    let distanceSquared = ((s.x - x) * (s.x - x)) + ((s.y - y) * (s.y - y));
+
+                    let value = Math.min((255 / distanceSquared) * brightness, 255);
+
+                    this.#setPixelValue(x, y, value, value, value, true);
                 }
             }
         })
@@ -108,7 +114,7 @@ export default class SpaceCanvasRenderer {
             this.#data[i] = 0;
             this.#data[i + 1] = 0;
             this.#data[i + 2] = 0;
-            this.#data[i + 2] = 1;
+            this.#data[i + 3] = 255;
         }
     }
 
@@ -117,7 +123,7 @@ export default class SpaceCanvasRenderer {
         return (y * this.#width + x) * BytesPerPixel;
     }
 
-    #setPixelValue(x: number, y: number, red: number, green: number, blue: number, alpha : number = 255) {
+    #setPixelValue(x: number, y: number, red: number, green: number, blue: number, colorAdditive: boolean = false, alpha: number = 255) {
 
         x = Math.round(x);
         y = Math.round(y);
@@ -129,10 +135,19 @@ export default class SpaceCanvasRenderer {
 
         let position : number = this.#getPixelPosition(x, y);
 
-        this.#data[position] = red;
-        this.#data[position + 1] = green;
-        this.#data[position + 2] = blue;
-        this.#data[position + 3] = alpha;
+        if (colorAdditive) {
+
+            this.#data[position] = Math.min(this.#data[position] + red, 255);
+            this.#data[position + 1] = Math.min(this.#data[position + 1] + green, 255);
+            this.#data[position + 2] = Math.min(this.#data[position + 2] + blue, 255);
+        }
+        else {
+
+            this.#data[position] = red;
+            this.#data[position + 1] = green;
+            this.#data[position + 2] = blue;
+            this.#data[position + 3] = alpha;
+        }
     }
 }
 
