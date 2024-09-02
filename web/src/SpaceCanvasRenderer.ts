@@ -18,7 +18,7 @@ export default class SpaceCanvasRenderer {
 
     velocityScale: number = 0.02;
 
-    #gravitationMax: number = 0.3;
+    gravitationMaxRatio: number = 0.0005;
 
     #intervalId: number;
 
@@ -76,8 +76,8 @@ export default class SpaceCanvasRenderer {
                 let directionX = (old[j].x - this.#stars[i].x) / distance;
                 let directionY = (old[j].y - this.#stars[i].y) / distance;
 
-                let dx = directionX * Math.min((this.gravitationScale * deltaMs) / distanceSquared, this.#gravitationMax);
-                let dy = directionY * Math.min((this.gravitationScale * deltaMs) / distanceSquared, this.#gravitationMax);
+                let dx = directionX * Math.min((this.gravitationScale * deltaMs) / distanceSquared, this.gravitationScale * this.gravitationMaxRatio);
+                let dy = directionY * Math.min((this.gravitationScale * deltaMs) / distanceSquared, this.gravitationScale * this.gravitationMaxRatio);
 
                 this.#stars[i].momentumX += dx;
                 this.#stars[i].momentumY += dy;

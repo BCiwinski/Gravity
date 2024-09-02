@@ -8,13 +8,17 @@ function App() {
 
     const [gravitationScale, setGravitationScale] = useState(200);
 
+    const [gravitationMax, setGravitationMax] = useState(0.0005);
+
+    const [velocityScale, setVelocityScale] = useState(0.02);
+
     const canvasRef = useRef(null);
 
-    const renderer= useRef<SpaceCanvasRenderer | null>(null);
+    const rendererRef= useRef<SpaceCanvasRenderer | null>(null);
 
     useEffect(() => {
 
-        if (renderer.current != null) {
+        if (rendererRef.current != null) {
 
             return;
         }
@@ -24,35 +28,58 @@ function App() {
             return;
         }
 
-        renderer.current = new SpaceCanvasRenderer(canvasRef.current.getContext("2d"));
+        rendererRef.current = new SpaceCanvasRenderer(canvasRef.current.getContext("2d"));
     });
-
-    useEffect(() => {
-
-        if (renderer.current == null) {
-
-            return;
-        }
-
-        renderer.current.gravitationScale = gravitationScale;
-    },
-        [renderer]);
 
     function handleGravitationScaleChange(e: React.ChangeEvent<HTMLInputElement>) : void {
 
         let parsed = parseInt(e.target.value)
         setGravitationScale(parsed);
 
-        if (renderer.current != null) {
+        if (rendererRef.current != null) {
 
-            renderer.current.gravitationScale = parsed;
+            rendererRef.current.gravitationScale = parsed;
+        }
+    }
+
+    function handleGravitationMaxChange(e: React.ChangeEvent<HTMLInputElement>): void {
+
+        let parsed = parseFloat(e.target.value)
+        setGravitationMax(parsed);
+
+        if (rendererRef.current != null) {
+
+            rendererRef.current.gravitationMaxRatio = parsed;
+        }
+    }
+
+    function handleVelocityScaleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+
+        let parsed = parseFloat(e.target.value)
+        setVelocityScale(parsed);
+
+        if (rendererRef.current != null) {
+
+            rendererRef.current.velocityScale = parsed;
         }
     }
 
     return (
         <div className="app">
-            <SpaceCanvas height={1024} width={1024} canvasRef={canvasRef} renderer={renderer.current}></SpaceCanvas>
-            <OptionsPanel gravitationScaleValue={gravitationScale} gravitationScaleChangeHandler={handleGravitationScaleChange}></OptionsPanel>
+            <SpaceCanvas
+                height={1024}
+                width={1024}
+                canvasRef={canvasRef}
+                renderer={rendererRef}
+            />
+            <OptionsPanel
+                gravitationScaleValue={gravitationScale}
+                gravitationScaleChangeHandler={handleGravitationScaleChange}
+                gravitationMaxValue={gravitationMax}
+                gravitationMaxChangeHandler={handleGravitationMaxChange}
+                velocityScaleValue={velocityScale}
+                velocityScaleChangeHandler={handleVelocityScaleChange}
+            />
         </div>
     )
 }

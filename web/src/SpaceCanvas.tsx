@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import SpaceCanvasRenderer from './SpaceCanvasRenderer'
 import './SpaceCanvas.css'
 
-function SpaceCanvas({ width, height, canvasRef, renderer}: { width: number, height: number, canvasRef: React.MutableRefObject<null>, renderer: SpaceCanvasRenderer | null}) : JSX.Element {
+function SpaceCanvas({ width, height, canvasRef, renderer }: { width: number, height: number, canvasRef: React.MutableRefObject<null>, renderer: React.MutableRefObject<SpaceCanvasRenderer | null> }) : JSX.Element {
 
     function handleClick(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 
@@ -11,7 +11,7 @@ function SpaceCanvas({ width, height, canvasRef, renderer}: { width: number, hei
             return;
         }
 
-        if (renderer == null) {
+        if (renderer.current == null) {
 
             return;
         }
@@ -19,7 +19,7 @@ function SpaceCanvas({ width, height, canvasRef, renderer}: { width: number, hei
         let canvasX = Math.round((e.clientX / canvasRef.current.clientWidth) * canvasRef.current.width);
         let canvasY = Math.round((e.clientY / canvasRef.current.clientHeight) * canvasRef.current.height);
 
-        renderer.createStarAt(canvasX, canvasY);
+        renderer.current.createStarAt(canvasX, canvasY);
     }
 
     return (

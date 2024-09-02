@@ -1,12 +1,62 @@
 import './OptionsPanel.css'
 
-function OptionsPanel({ gravitationScaleValue, gravitationScaleChangeHandler }: {gravitationScaleValue: number, gravitationScaleChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void}) {
+function OptionsPanel({
+    gravitationScaleValue,
+    gravitationScaleChangeHandler,
+    gravitationMaxValue,
+    gravitationMaxChangeHandler,
+    velocityScaleValue,
+    velocityScaleChangeHandler }:
+    {
+        gravitationScaleValue: number,
+        gravitationScaleChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void,
+        gravitationMaxValue : number
+        gravitationMaxChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void,
+        velocityScaleValue: number
+        velocityScaleChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void
+    }) {
 
     return (
         <div className="optionsPanel">
             <h3>Options</h3>
-            <label htmlFor="gravitationScale">Gravitation strength: </label>
-            <input type="number" name="gravitationScale" min="0" max="100000" value={gravitationScaleValue} onChange={e => gravitationScaleChangeHandler(e)}></input>
+            <div>
+                <label htmlFor="gravitationScaleInput">Gravitation strength: </label>
+                <input
+                    type="number"
+                    id="gravitationScaleInput"
+                    name="gravitationScale"
+                    min="0"
+                    max="10000"
+                    step="10"
+                    defaultValue={gravitationScaleValue}
+                    onChange={e => gravitationScaleChangeHandler(e)}
+                />
+                <br/>
+                <label htmlFor="gravitationMaxInput">Gravitation max force: </label>
+                <input
+                    type="number"
+                    id="gravitationMaxInput"
+                    name="gravitationMax"
+                    min="0"
+                    max="1"
+                    step="0.0001"
+                    defaultValue={gravitationMaxValue}
+                    onChange={e => gravitationMaxChangeHandler(e)}
+                />
+                <br/>
+                <label htmlFor="velocityScaleInput">Velocity: </label>
+                <input
+                    type="number"
+                    id="velocityScaleInput"
+                    name="velocityScale"
+                    min="0"
+                    max="1"
+                    step="0.0001"
+                    defaultValue={velocityScaleValue}
+                    onChange={e => velocityScaleChangeHandler(e)}
+                />
+            </div>
+
         </div>
   );
 }
