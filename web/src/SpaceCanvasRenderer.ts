@@ -18,7 +18,7 @@ export default class SpaceCanvasRenderer {
 
     velocityScale: number = 0.02;
 
-    #gravitationMax: number = 0.1;
+    #gravitationMax: number = 0.3;
 
     #intervalId: number;
 
