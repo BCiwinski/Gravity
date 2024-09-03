@@ -87,10 +87,11 @@ function OptionsPanel({
 
     return (
         <div className="optionsPanel">
-            <h3>Options</h3>
-            <div>
+            <h2>Options</h2>
+            <div className="options">
                 <label htmlFor="gravitationScaleInput">Gravitation strength: </label>
                 <input
+                    className="options"
                     type="number"
                     id="gravitationScaleInput"
                     name="gravitationScale"
@@ -103,6 +104,7 @@ function OptionsPanel({
                 <br/>
                 <label htmlFor="gravitationMaxInput">Gravitation max force: </label>
                 <input
+                    className="options"
                     type="number"
                     id="gravitationMaxInput"
                     name="gravitationMax"
@@ -115,6 +117,7 @@ function OptionsPanel({
                 <br/>
                 <label htmlFor="velocityScaleInput">Velocity: </label>
                 <input
+                    className="options"
                     type="number"
                     id="velocityScaleInput"
                     name="velocityScale"
@@ -124,10 +127,8 @@ function OptionsPanel({
                     value={velocityScale}
                     onChange={e => handleVelocityScaleChange(e)}
                 />
-                <br />
-                <input type="button" value="Clear" onClick={() => clearHandler()} />
             </div>
-
+            <input type="button" className="options" value="Clear stars" onClick={() => clearHandler()} />
         </div>
   );
 }

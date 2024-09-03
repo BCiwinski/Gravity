@@ -6,4 +6,23 @@
     display: inline-block;
     margin: 0.5em 0.5em 0.5em 0.5em;
     position: relative;
+    text-align: center;
 }
+
+div.options {
+    text-align: end;
+    margin: 1em 0em 1em 0em;
+}
+
+input.options {
+    background-color: #303030;
+    border-radius: 1em;
+    padding: 0em 0.5em 0em 0.5em;
+}
+
+input.options[type=button]{
+
+    width: 100%;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+}
+
