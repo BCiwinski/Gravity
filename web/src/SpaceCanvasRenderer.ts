@@ -24,6 +24,10 @@ export default class SpaceCanvasRenderer {
 
     #tickMs: number = 50;
 
+    #offsetX: number = 0;
+
+    #offsetY: number = 0;
+
     constructor(
         context: CanvasRenderingContext2D,
         gravitationScale: number,
@@ -52,8 +56,13 @@ export default class SpaceCanvasRenderer {
 
     createStarAt(x: number, y: number): void {
 
-        this.#stars.push(new Star(x, y));
-        this.#render();
+        this.#stars.push(new Star(x + this.#offsetX, y + this.#offsetY));
+    }
+
+    centerAt(x: number, y: number): void {
+
+        this.#offsetX += x - (this.#width / 2);
+        this.#offsetY += y - (this.#height / 2);
     }
 
     clearStars(): void {
@@ -125,10 +134,14 @@ export default class SpaceCanvasRenderer {
 
             const brightness = 5;
 
-            for (let x = Math.round(s.x - size); x < Math.round(s.x + size); x++) {
-                for (let y = Math.round(s.y - size); y < Math.round(s.y + size); y++) {
+            const starX = s.x - this.#offsetX;
 
-                    let distanceSquared = ((s.x - x) * (s.x - x)) + ((s.y - y) * (s.y - y));
+            const starY = s.y - this.#offsetY;
+
+            for (let x = Math.round(starX - size); x < Math.round(starX + size); x++) {
+                for (let y = Math.round(starY - size); y < Math.round(starY + size); y++) {
+
+                    let distanceSquared = ((starX - x) * (starX - x)) + ((starY - y) * (starY - y));
 
                     let value = Math.min((255 / distanceSquared) * brightness, 255);
 

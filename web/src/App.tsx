@@ -73,7 +73,7 @@ function App() : JSX.Element {
                 height={1024}
                 width={1024}
                 canvasRef={canvasRef}
-                renderer={rendererRef}
+                rendererRef={rendererRef}
             />
             <OptionsPanel
                 initialGravitationScale={initialGravitationScale}
