@@ -1,4 +1,4 @@
-import {useEffect, useRef } from 'react'
+import {useState, useEffect, useRef } from 'react'
 import OptionsPanel from './OptionsPanel'
 import SpaceCanvas from './SpaceCanvas'
 import SpaceCanvasRenderer from './SpaceCanvasRenderer'
@@ -8,13 +8,30 @@ function App() : JSX.Element {
 
     const initialGravitationScale = 200;
 
-    const initialGravitationMax = 0.0005
+    const initialGravitationMax = 0.0005;
 
     const initialVelocityScale = 0.02;
 
     const canvasRef = useRef(null);
 
-    const rendererRef= useRef<SpaceCanvasRenderer | null>(null);
+    const rendererRef = useRef<SpaceCanvasRenderer | null>(null);
+
+    const [showOptions, setShowOptions] = useState(true);
+
+    useEffect(() => {
+
+        window.addEventListener('keydown', handleWindowKeydown);
+        return () => { window.removeEventListener('keydown', handleWindowKeydown); };
+    },
+    [])
+
+    function handleWindowKeydown(e: KeyboardEvent) {
+
+        if (e.key == "o" || e.key == "O") {
+
+            setShowOptions(o => !o)
+        }
+    }
 
     useEffect(() => {
 
@@ -71,7 +88,7 @@ function App() : JSX.Element {
                 canvasRef={canvasRef}
                 renderer={rendererRef}
             />
-            <OptionsPanel
+            {showOptions && <OptionsPanel
                 initialGravitationScale={initialGravitationScale}
                 updateGravitationScale={updateGravitationScale}
                 initialGravitationMax={initialGravitationMax}
@@ -79,7 +96,7 @@ function App() : JSX.Element {
                 initialVelocityScale={initialVelocityScale}
                 updateVelocityScale={updateVelocityScale}
                 clearHandler={handleClearClick}
-            />
+            />}
         </div>
     )
 }
