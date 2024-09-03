@@ -1,4 +1,3 @@
-import { useRef, useState, useEffect } from 'react'
 import SpaceCanvasRenderer from './SpaceCanvasRenderer'
 import './SpaceCanvas.css'
 

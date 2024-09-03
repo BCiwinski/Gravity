@@ -1,22 +1,54 @@
+import { useState } from 'react'
 import './OptionsPanel.css'
 
 function OptionsPanel({
-    gravitationScaleValue,
-    gravitationScaleChangeHandler,
-    gravitationMaxValue,
-    gravitationMaxChangeHandler,
-    velocityScaleValue,
-    velocityScaleChangeHandler,
+    initialGravitationScale,
+    updateGravitationScale,
+    initialGravitationMax,
+    updateGravitationMax,
+    initialVelocityScale,
+    updateVelocityScale,
     clearHandler}:
     {
-        gravitationScaleValue: number,
-        gravitationScaleChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void,
-        gravitationMaxValue : number
-        gravitationMaxChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void,
-        velocityScaleValue: number
-        velocityScaleChangeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void,
+        initialGravitationScale: number,
+        updateGravitationScale: (value: number) => void,
+        initialGravitationMax : number
+        updateGravitationMax: (value: number) => void,
+        initialVelocityScale: number
+        updateVelocityScale: (value: number) => void,
         clearHandler: () => void
-    }) {
+    }): JSX.Element
+{
+
+    const [, setGravitationScale] = useState(initialGravitationScale);
+
+    const [, setGravitationMax] = useState(initialGravitationMax);
+
+    const [, setVelocityScale] = useState(initialVelocityScale);
+
+    function handleGravitationScaleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+
+        let parsed = parseInt(e.target.value)
+        setGravitationScale(parsed);
+
+        updateGravitationScale(parsed);
+    }
+
+    function handleGravitationMaxChange(e: React.ChangeEvent<HTMLInputElement>): void {
+
+        let parsed = parseFloat(e.target.value)
+        setGravitationMax(parsed);
+
+        updateGravitationMax(parsed);
+    }
+
+    function handleVelocityScaleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+
+        let parsed = parseFloat(e.target.value)
+        setVelocityScale(parsed);
+
+        updateVelocityScale(parsed);
+    }
 
     return (
         <div className="optionsPanel">
@@ -30,8 +62,8 @@ function OptionsPanel({
                     min="0"
                     max="10000"
                     step="10"
-                    defaultValue={gravitationScaleValue}
-                    onChange={e => gravitationScaleChangeHandler(e)}
+                    defaultValue={initialGravitationScale}
+                    onChange={e => handleGravitationScaleChange(e)}
                 />
                 <br/>
                 <label htmlFor="gravitationMaxInput">Gravitation max force: </label>
@@ -42,8 +74,8 @@ function OptionsPanel({
                     min="0"
                     max="1"
                     step="0.0001"
-                    defaultValue={gravitationMaxValue}
-                    onChange={e => gravitationMaxChangeHandler(e)}
+                    defaultValue={initialGravitationMax}
+                    onChange={e => handleGravitationMaxChange(e)}
                 />
                 <br/>
                 <label htmlFor="velocityScaleInput">Velocity: </label>
@@ -54,8 +86,8 @@ function OptionsPanel({
                     min="0"
                     max="1"
                     step="0.0001"
-                    defaultValue={velocityScaleValue}
-                    onChange={e => velocityScaleChangeHandler(e)}
+                    defaultValue={initialVelocityScale}
+                    onChange={e => handleVelocityScaleChange(e)}
                 />
                 <br />
                 <input type="button" value="Clear" onClick={() => clearHandler()} />
