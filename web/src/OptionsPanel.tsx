@@ -26,11 +26,11 @@ function OptionsPanel({
 
     const [gravitationMax, setGravitationMax] = useState(initialGravitationMax);
 
-    const gravitationMaxMax = 0.1, gravitationMaxMin = 0.0001;
+    const gravitationMaxMax = 0.01, gravitationMaxMin = 0.0001;
 
     const [velocityScale, setVelocityScale] = useState(initialVelocityScale);
 
-    const velocityScaleMax = 1, velocityScaleMin = 0.0001;
+    const velocityScaleMax = 1, velocityScaleMin = 0.001;
 
     function handleGravitationScaleChange(e: React.ChangeEvent<HTMLInputElement>): void {
 
@@ -117,7 +117,7 @@ function OptionsPanel({
                     name="velocityScale"
                     min={velocityScaleMin}
                     max={velocityScaleMax}
-                    step="0.0001"
+                    step="0.001"
                     value={clampNumber(velocityScale, velocityScaleMin, velocityScaleMax)}
                     onChange={e => handleVelocityScaleChange(e)}
                 />

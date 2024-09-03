@@ -6,11 +6,11 @@ import './App.css'
 
 function App() : JSX.Element {
 
-    const initialGravitationScale = 200;
+    const initialGravitationScale = 500;
 
-    const initialGravitationMax = 0.0005;
+    const initialGravitationMax = 0.0001;
 
-    const initialVelocityScale = 0.02;
+    const initialVelocityScale = 0.2;
 
     const canvasRef = useRef(null);
 
@@ -45,7 +45,11 @@ function App() : JSX.Element {
             return;
         }
 
-        rendererRef.current = new SpaceCanvasRenderer(canvasRef.current.getContext("2d"));
+        rendererRef.current = new SpaceCanvasRenderer(
+            canvasRef.current.getContext("2d"),
+            initialGravitationScale,
+            initialGravitationMax,
+            initialVelocityScale);
     });
 
     function updateGravitationScale(value: number) : void {

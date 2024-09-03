@@ -14,17 +14,26 @@ export default class SpaceCanvasRenderer {
 
     #stars: Array<Star> = new Array<Star>();
 
-    gravitationScale: number = 200.0;
+    gravitationScale: number = 500.0;
 
-    velocityScale: number = 0.02;
+    velocityScale: number = 0.2;
 
-    gravitationMaxRatio: number = 0.0005;
+    gravitationMaxRatio: number = 0.0001;
 
     #intervalId: number;
 
     #tickMs: number = 50;
 
-    constructor(context: CanvasRenderingContext2D){
+    constructor(
+        context: CanvasRenderingContext2D,
+        gravitationScale: number,
+        gravitationMaxRatio: number,
+        velocityScale: number) {
+
+        this.gravitationScale = gravitationScale;
+        this.gravitationMaxRatio = gravitationMaxRatio;
+        this.velocityScale = velocityScale;
+
 
         this.#context = context;
         this.#height = context.canvas.height;
@@ -76,13 +85,20 @@ export default class SpaceCanvasRenderer {
                     (old[j].x - this.#stars[i].x) * (old[j].x - this.#stars[i].x)
                     + (old[j].y - this.#stars[i].y) * (old[j].y - this.#stars[i].y);
 
+                if (distanceSquared <= 0.01) {
+
+                    continue;
+                }
+
                 let distance = Math.sqrt(distanceSquared);
 
                 let directionX = (old[j].x - this.#stars[i].x) / distance;
                 let directionY = (old[j].y - this.#stars[i].y) / distance;
 
-                let dx = directionX * Math.min((this.gravitationScale * deltaMs) / distanceSquared, this.gravitationScale * this.gravitationMaxRatio);
-                let dy = directionY * Math.min((this.gravitationScale * deltaMs) / distanceSquared, this.gravitationScale * this.gravitationMaxRatio);
+                let force = Math.min((this.gravitationScale * deltaMs * this.velocityScale)/ distanceSquared, this.gravitationScale * this.gravitationMaxRatio);
+
+                let dx = directionX * force;
+                let dy = directionY * force;
 
                 this.#stars[i].momentumX += dx;
                 this.#stars[i].momentumY += dy;
