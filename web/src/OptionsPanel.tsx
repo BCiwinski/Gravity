@@ -26,7 +26,7 @@ function OptionsPanel({
 
     const [gravitationMax, setGravitationMax] = useState(initialGravitationMax);
 
-    const gravitationMaxMax = 1, gravitationMaxMin = 0.0001;
+    const gravitationMaxMax = 0.1, gravitationMaxMin = 0.0001;
 
     const [velocityScale, setVelocityScale] = useState(initialVelocityScale);
 
@@ -35,54 +35,48 @@ function OptionsPanel({
     function handleGravitationScaleChange(e: React.ChangeEvent<HTMLInputElement>): void {
 
         let parsed = parseInt(e.target.value)
+        parsed = clampNumber(parsed, gravitationScaleMin, gravitationScaleMax);
 
-        if (numberIsWithin(parsed, gravitationScaleMin, gravitationScaleMax)) {
-
-            setGravitationScale(parsed);
-            updateGravitationScale(parsed);
-        }
+        setGravitationScale(parsed);
+        updateGravitationScale(parsed);
     }
 
     function handleGravitationMaxChange(e: React.ChangeEvent<HTMLInputElement>): void {
 
         let parsed = parseFloat(e.target.value)
+        parsed = clampNumber(parsed, gravitationMaxMin, gravitationMaxMax)
 
-        if (numberIsWithin(parsed, gravitationMaxMin, gravitationMaxMax)) {
-
-            setGravitationMax(parsed);
-            updateGravitationMax(parsed);
-        }
+        setGravitationMax(parsed);
+        updateGravitationMax(parsed);
     }
 
     function handleVelocityScaleChange(e: React.ChangeEvent<HTMLInputElement>): void {
 
         let parsed = parseFloat(e.target.value)
+        parsed = clampNumber(parsed, velocityScaleMin, velocityScaleMax);
 
-        if (numberIsWithin(parsed, velocityScaleMin, velocityScaleMax)) {
-
-            setVelocityScale(parsed);
-            updateVelocityScale(parsed);
-        }
+        setVelocityScale(parsed);
+        updateVelocityScale(parsed);
     }
 
-    function numberIsWithin(number: number, rangeFrom: number, rangeTo: number): boolean {
+    function clampNumber(number: number, rangeFrom: number, rangeTo: number): number {
 
         if (Number.isNaN(number)) {
 
-            return false;
+            return rangeFrom;
         }
 
         if (number < rangeFrom) {
 
-            return false;
+            return rangeFrom;
         }
 
         if (number > rangeTo) {
 
-            return false;
+            return rangeTo;
         }
 
-        return true;
+        return number;
     }
 
     return (
@@ -98,7 +92,7 @@ function OptionsPanel({
                     min={gravitationScaleMin}
                     max={gravitationScaleMax}
                     step="10"
-                    value={gravitationScale}
+                    value={clampNumber(gravitationScale, gravitationScaleMin, gravitationScaleMax)}
                     onChange={e => handleGravitationScaleChange(e)}
                 />
                 <br/>
@@ -111,7 +105,7 @@ function OptionsPanel({
                     min={gravitationMaxMin}
                     max={gravitationMaxMax}
                     step="0.0001"
-                    value={gravitationMax}
+                    value={clampNumber(gravitationMax, gravitationMaxMin, gravitationMaxMax)}
                     onChange={e => handleGravitationMaxChange(e)}
                 />
                 <br/>
@@ -124,7 +118,7 @@ function OptionsPanel({
                     min={velocityScaleMin}
                     max={velocityScaleMax}
                     step="0.0001"
-                    value={velocityScale}
+                    value={clampNumber(velocityScale, velocityScaleMin, velocityScaleMax)}
                     onChange={e => handleVelocityScaleChange(e)}
                 />
             </div>
