@@ -20,34 +20,69 @@ function OptionsPanel({
     }): JSX.Element
 {
 
-    const [, setGravitationScale] = useState(initialGravitationScale);
+    const [gravitationScale, setGravitationScale] = useState(initialGravitationScale);
 
-    const [, setGravitationMax] = useState(initialGravitationMax);
+    const gravitationScaleMax = 10000, gravitationScaleMin = 0;
 
-    const [, setVelocityScale] = useState(initialVelocityScale);
+    const [gravitationMax, setGravitationMax] = useState(initialGravitationMax);
+
+    const gravitationMaxMax = 1, gravitationMaxMin = 0.0001;
+
+    const [velocityScale, setVelocityScale] = useState(initialVelocityScale);
+
+    const velocityScaleMax = 1, velocityScaleMin = 0.0001;
 
     function handleGravitationScaleChange(e: React.ChangeEvent<HTMLInputElement>): void {
 
         let parsed = parseInt(e.target.value)
-        setGravitationScale(parsed);
 
-        updateGravitationScale(parsed);
+        if (numberIsWithin(parsed, gravitationScaleMin, gravitationScaleMax)) {
+
+            setGravitationScale(parsed);
+            updateGravitationScale(parsed);
+        }
     }
 
     function handleGravitationMaxChange(e: React.ChangeEvent<HTMLInputElement>): void {
 
         let parsed = parseFloat(e.target.value)
-        setGravitationMax(parsed);
 
-        updateGravitationMax(parsed);
+        if (numberIsWithin(parsed, gravitationMaxMin, gravitationMaxMax)) {
+
+            setGravitationMax(parsed);
+            updateGravitationMax(parsed);
+        }
     }
 
     function handleVelocityScaleChange(e: React.ChangeEvent<HTMLInputElement>): void {
 
         let parsed = parseFloat(e.target.value)
-        setVelocityScale(parsed);
 
-        updateVelocityScale(parsed);
+        if (numberIsWithin(parsed, velocityScaleMin, velocityScaleMax)) {
+
+            setVelocityScale(parsed);
+            updateVelocityScale(parsed);
+        }
+    }
+
+    function numberIsWithin(number: number, rangeFrom: number, rangeTo: number): boolean {
+
+        if (Number.isNaN(number)) {
+
+            return false;
+        }
+
+        if (number < rangeFrom) {
+
+            return false;
+        }
+
+        if (number > rangeTo) {
+
+            return false;
+        }
+
+        return true;
     }
 
     return (
@@ -59,10 +94,10 @@ function OptionsPanel({
                     type="number"
                     id="gravitationScaleInput"
                     name="gravitationScale"
-                    min="0"
-                    max="10000"
+                    min={gravitationScaleMin}
+                    max={gravitationScaleMax}
                     step="10"
-                    defaultValue={initialGravitationScale}
+                    value={gravitationScale}
                     onChange={e => handleGravitationScaleChange(e)}
                 />
                 <br/>
@@ -71,10 +106,10 @@ function OptionsPanel({
                     type="number"
                     id="gravitationMaxInput"
                     name="gravitationMax"
-                    min="0"
-                    max="1"
+                    min={gravitationMaxMin}
+                    max={gravitationMaxMax}
                     step="0.0001"
-                    defaultValue={initialGravitationMax}
+                    value={gravitationMax}
                     onChange={e => handleGravitationMaxChange(e)}
                 />
                 <br/>
@@ -83,10 +118,10 @@ function OptionsPanel({
                     type="number"
                     id="velocityScaleInput"
                     name="velocityScale"
-                    min="0"
-                    max="1"
+                    min={velocityScaleMin}
+                    max={velocityScaleMax}
                     step="0.0001"
-                    defaultValue={initialVelocityScale}
+                    value={velocityScale}
                     onChange={e => handleVelocityScaleChange(e)}
                 />
                 <br />
