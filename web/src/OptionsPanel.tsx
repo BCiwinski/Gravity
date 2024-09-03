@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useId } from 'react'
+import Option from './NumericOption'
 import './OptionsPanel.css'
 
 function OptionsPanel({
@@ -20,127 +21,56 @@ function OptionsPanel({
     }): JSX.Element | null
 {
 
-    const [gravitationScale, setGravitationScale] = useState(initialGravitationScale);
-
-    const gravitationScaleMax = 10000, gravitationScaleMin = 0;
-
-    const [gravitationMax, setGravitationMax] = useState(initialGravitationMax);
-
-    const gravitationMaxMax = 0.01, gravitationMaxMin = 0.0001;
-
-    const [velocityScale, setVelocityScale] = useState(initialVelocityScale);
-
-    const velocityScaleMax = 1, velocityScaleMin = 0.001;
-
     const [show, setShow] = useState(true);
 
     useEffect(() => {
 
         window.addEventListener('keydown', handleWindowKeydown);
         return () => { window.removeEventListener('keydown', handleWindowKeydown); };
-    },
-        [])
+        },
+        []);
 
     function handleWindowKeydown(e: KeyboardEvent) {
 
         if (e.key == "o" || e.key == "O") {
 
-            setShow(o => !o)
+            setShow(s => !s);
         }
-    }
-
-    function handleGravitationScaleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-
-        let parsed = parseInt(e.target.value)
-        parsed = clampNumber(parsed, gravitationScaleMin, gravitationScaleMax);
-
-        setGravitationScale(parsed);
-        updateGravitationScale(parsed);
-    }
-
-    function handleGravitationMaxChange(e: React.ChangeEvent<HTMLInputElement>): void {
-
-        let parsed = parseFloat(e.target.value)
-        parsed = clampNumber(parsed, gravitationMaxMin, gravitationMaxMax)
-
-        setGravitationMax(parsed);
-        updateGravitationMax(parsed);
-    }
-
-    function handleVelocityScaleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-
-        let parsed = parseFloat(e.target.value)
-        parsed = clampNumber(parsed, velocityScaleMin, velocityScaleMax);
-
-        setVelocityScale(parsed);
-        updateVelocityScale(parsed);
-    }
-
-    function clampNumber(number: number, rangeFrom: number, rangeTo: number): number {
-
-        if (Number.isNaN(number)) {
-
-            return rangeFrom;
-        }
-
-        if (number < rangeFrom) {
-
-            return rangeFrom;
-        }
-
-        if (number > rangeTo) {
-
-            return rangeTo;
-        }
-
-        return number;
-    }
-
-    if (!show) {
-        return null;
     }
 
     return (
-        <div className="optionsPanel">
+        <div className="optionsPanel" style={show ? { display: 'inline-block' } : {display: 'none'} }>
             <h2>Options</h2>
             <div className="options">
-                <label htmlFor="gravitationScaleInput">Gravitation strength: </label>
-                <input
-                    className="options"
-                    type="number"
-                    id="gravitationScaleInput"
-                    name="gravitationScale"
-                    min={gravitationScaleMin}
-                    max={gravitationScaleMax}
-                    step="10"
-                    value={clampNumber(gravitationScale, gravitationScaleMin, gravitationScaleMax)}
-                    onChange={e => handleGravitationScaleChange(e)}
+                <Option
+                    id={useId()}
+                    label="Gravitation strength"
+                    initialValue={initialGravitationScale}
+                    update={updateGravitationScale}
+                    titleAtr="Overall gravitation strength. Most noticable over large distances."
+                    maxValue={10000}
+                    minValue={0}
+                    step={10}
                 />
-                <br/>
-                <label htmlFor="gravitationMaxInput">Gravitation max force: </label>
-                <input
-                    className="options"
-                    type="number"
-                    id="gravitationMaxInput"
-                    name="gravitationMax"
-                    min={gravitationMaxMin}
-                    max={gravitationMaxMax}
-                    step="0.0001"
-                    value={clampNumber(gravitationMax, gravitationMaxMin, gravitationMaxMax)}
-                    onChange={e => handleGravitationMaxChange(e)}
+                <Option
+                    id={useId()}
+                    label="Gravitation max force"
+                    initialValue={initialGravitationMax}
+                    update={updateGravitationMax}
+                    titleAtr="Maximum attraction limiter, as a fraction of gravitation strength. Low values make close encounters more gentle."
+                    maxValue={0.01}
+                    minValue={0.0001}
+                    step={0.0001}
                 />
-                <br/>
-                <label htmlFor="velocityScaleInput">Velocity: </label>
-                <input
-                    className="options"
-                    type="number"
-                    id="velocityScaleInput"
-                    name="velocityScale"
-                    min={velocityScaleMin}
-                    max={velocityScaleMax}
-                    step="0.001"
-                    value={clampNumber(velocityScale, velocityScaleMin, velocityScaleMax)}
-                    onChange={e => handleVelocityScaleChange(e)}
+                <Option
+                    id={useId()}
+                    label="Velocity"
+                    initialValue={initialVelocityScale}
+                    update={updateVelocityScale}
+                    titleAtr="Changes momentum/attraction ratio. High values make everything go super fast. Sudden change may cause an explosion!"
+                    maxValue={1}
+                    minValue={0.001}
+                    step={0.001}
                 />
             </div>
             <small>center on cursor with 'c'</small>
