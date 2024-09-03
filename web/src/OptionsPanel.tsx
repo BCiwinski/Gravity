@@ -143,10 +143,10 @@ function OptionsPanel({
                     onChange={e => handleVelocityScaleChange(e)}
                 />
             </div>
-            <input type="button" className="options" value="Clear stars" onClick={() => clearHandler()} />
             <small>center on cursor with 'c'</small>
             <br />
             <small>press 'o' to hide</small>
+            <input type="button" className="options" value="Clear stars" onClick={() => clearHandler()} />
         </div>
   );
 }
