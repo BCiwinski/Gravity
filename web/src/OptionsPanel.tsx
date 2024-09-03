@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './OptionsPanel.css'
 
 function OptionsPanel({
@@ -17,7 +17,7 @@ function OptionsPanel({
         initialVelocityScale: number
         updateVelocityScale: (value: number) => void,
         clearHandler: () => void
-    }): JSX.Element
+    }): JSX.Element | null
 {
 
     const [gravitationScale, setGravitationScale] = useState(initialGravitationScale);
@@ -31,6 +31,23 @@ function OptionsPanel({
     const [velocityScale, setVelocityScale] = useState(initialVelocityScale);
 
     const velocityScaleMax = 1, velocityScaleMin = 0.001;
+
+    const [show, setShow] = useState(true);
+
+    useEffect(() => {
+
+        window.addEventListener('keydown', handleWindowKeydown);
+        return () => { window.removeEventListener('keydown', handleWindowKeydown); };
+    },
+        [])
+
+    function handleWindowKeydown(e: KeyboardEvent) {
+
+        if (e.key == "o" || e.key == "O") {
+
+            setShow(o => !o)
+        }
+    }
 
     function handleGravitationScaleChange(e: React.ChangeEvent<HTMLInputElement>): void {
 
@@ -77,6 +94,10 @@ function OptionsPanel({
         }
 
         return number;
+    }
+
+    if (!show) {
+        return null;
     }
 
     return (
